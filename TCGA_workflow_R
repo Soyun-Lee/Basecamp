@@ -1,0 +1,15 @@
+library(TCGAbiolinks)
+# 1. Search Data in GDC portal
+query <- GDCquery(project="TCGA-LIHC",data.category="Transcriptome Profiling",data.type="Gene Expression Quantification",workflow.type="HTSeq - Counts")
+# 2. Download
+GDCDownload(query)
+# 3. Make R object from Download data
+data <- GDCprepare(query)
+# 4. Extract gene expression matrix
+library(SummarizedExperiment)
+eset <- assay(data)
+write.csv(eset, file="GE.csv")
+# 5. Get sample information
+sample.info <– colData(data)
+# 6. get genes information
+genes.info <– rowRanges(data)
